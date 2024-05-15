@@ -1,0 +1,72 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Estudiante {
+    private String nombre;
+    private int edad;
+    private double promedio;
+    private double valorMatricula;
+
+    public Estudiante(String nombre, int edad, double promedio, double valorMatricula) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.promedio = promedio;
+        this.valorMatricula = valorMatricula;
+    }
+
+    public double calcularDescuento() {
+        if (promedio > 9) {
+            return 0.25; // 25% de descuento
+        } else if (promedio >= 7) {
+            return 0.10; // 10% de descuento
+        } else {
+            return 0.0; // Sin descuento
+        }
+    }
+
+    public void mostrarInformacion() {
+        double descuento = calcularDescuento();
+        double valorFinal = valorMatricula * (1 - descuento);
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Edad: " + edad);
+        System.out.println("Promedio: " + promedio);
+        System.out.println("Valor de Matrícula: $" + valorMatricula);
+        if (descuento > 0) {
+            System.out.println("Descuento: " + (descuento * 100) + "%");
+            System.out.println("Valor Final con Descuento: $" + valorFinal);
+        } else {
+            System.out.println("Descuento: No aplica");
+        }
+        System.out.println("-------------------------");
+    }
+}
+
+public class RegistroEstudiantes {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Estudiante> estudiantes = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Ingrese la información del estudiante " + (i + 1) + ":");
+            System.out.print("Nombre: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Edad: ");
+            int edad = scanner.nextInt();
+            System.out.print("Promedio: ");
+            double promedio = scanner.nextDouble();
+            System.out.print("Valor de Matrícula: ");
+            double valorMatricula = scanner.nextDouble();
+            scanner.nextLine(); // Consumir la nueva línea
+
+            estudiantes.add(new Estudiante(nombre, edad, promedio, valorMatricula));
+        }
+
+        System.out.println("Información de los estudiantes registrados:");
+        for (Estudiante estudiante : estudiantes) {
+            estudiante.mostrarInformacion();
+        }
+        
+        scanner.close();
+    }
+}
