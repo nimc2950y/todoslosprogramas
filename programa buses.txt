@@ -1,0 +1,269 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Autobus {
+    private String id;
+    private int capacidad;
+    private String estado; // "en servicio" o "en mantenimiento"
+
+    public Autobus(String id, int capacidad, String estado) {
+        this.id = id;
+        this.capacidad = capacidad;
+        this.estado = estado;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+}
+
+class Ruta {
+    private String codigo;
+    private String origen;
+    private String destino;
+    private Autobus autobus;
+
+    public Ruta(String codigo, String origen, String destino, Autobus autobus) {
+        this.codigo = codigo;
+        this.origen = origen;
+        this.destino = destino;
+        this.autobus = autobus;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public String getOrigen() {
+        return origen;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public Autobus getAutobus() {
+        return autobus;
+    }
+
+    public void setAutobus(Autobus autobus) {
+        this.autobus = autobus;
+    }
+}
+
+public class TransLoja {
+    private ArrayList<Autobus> autobuses;
+    private ArrayList<Ruta> rutas;
+
+    public TransLoja() {
+        autobuses = new ArrayList<>();
+        rutas = new ArrayList<>();
+    }
+
+    // Método para registrar un autobús
+    public void registrarAutobus(String id, int capacidad, String estado) {
+        Autobus autobus = new Autobus(id, capacidad, estado);
+        autobuses.add(autobus);
+    }
+
+    // Método para registrar una ruta
+    public void registrarRuta(String codigo, String origen, String destino, Autobus autobus) {
+        Ruta ruta = new Ruta(codigo, origen, destino, autobus);
+        rutas.add(ruta);
+    }
+
+    // Método para asignar un autobús a una ruta
+    public boolean asignarAutobusARuta(String codigoRuta, String idAutobus) {
+        Autobus autobus = buscarAutobusPorId(idAutobus);
+        if (autobus != null && autobus.getEstado().equals("en servicio")) {
+            for (Ruta ruta : rutas) {
+                if (ruta.getCodigo().equals(codigoRuta)) {
+                    ruta.setAutobus(autobus);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Método para buscar un autobús por su ID
+    public Autobus buscarAutobusPorId(String id) {
+        for (Autobus autobus : autobuses) {
+            if (autobus.getId().equals(id)) {
+                return autobus;
+            }
+        }
+        return null;
+    }
+
+    // Método para calcular estadísticas de rutas
+    public void calcularEstadisticas() {
+        int[] rutasPorAutobus = new int[autobuses.size()];
+        for (Ruta ruta : rutas) {
+            Autobus autobus = ruta.getAutobus();
+            if (autobus != null) {
+                int index = autobuses.indexOf(autobus);
+                rutasPorAutobus[index]++;
+            }
+        }
+
+        double promedio = 0;
+        int maxRutas = 0;
+        int minRutas = rutas.size() > 0 ? rutasPorAutobus[0] : 0;
+        Autobus autobusConMasRutas = null;
+        Autobus autobusConMenosRutas = null;
+
+        for (int i = 0; i < rutasPorAutobus.length; i++) {
+            promedio += rutasPorAutobus[i];
+            if (rutasPorAutobus[i] > maxRutas) {
+                maxRutas = rutasPorAutobus[i];
+                autobusConMasRutas = autobuses.get(i);
+            }
+            if (rutasPorAutobus[i] < minRutas) {
+                minRutas = rutasPorAutobus[i];
+                autobusConMenosRutas = autobuses.get(i);
+            }
+        }
+        promedio = rutasPorAutobus.length > 0 ? promedio / rutasPorAutobus.length : 0;
+
+        System.out.println("Número promedio de rutas por autobús: " + promedio);
+        if (autobusConMasRutas != null) {
+            System.out.println("Autobús con más rutas: " + autobusConMasRutas.getId() + " con " + maxRutas + " rutas.");
+        }
+        if (autobusConMenosRutas != null) {
+            System.out.println("Autobús con menos rutas: " + autobusConMenosRutas.getId() + " con " + minRutas + " rutas.");
+        }
+    }
+
+    // Método para listar información de rutas y autobuses
+    public void listarInformacion() {
+        System.out.println("Listado de Autobuses:");
+        for (Autobus autobus : autobuses) {
+            System.out.println("ID: " + autobus.getId() + ", Capacidad: " + autobus.getCapacidad() + ", Estado: " + autobus.getEstado());
+        }
+
+        System.out.println("\nListado de Rutas:");
+        for (Ruta ruta : rutas) {
+            String autobusId = ruta.getAutobus() != null ? ruta.getAutobus().getId() : "No asignado";
+            System.out.println("Código: " + ruta.getCodigo() + ", Origen: " + ruta.getOrigen() + ", Destino: " + ruta.getDestino() + ", Autobús: " + autobusId);
+        }
+    }
+
+    // Método para listar rutas de un autobús específico
+    public void listarRutasPorAutobus(String idAutobus) {
+        Autobus autobus = buscarAutobusPorId(idAutobus);
+        if (autobus != null) {
+            System.out.println("Rutas asignadas al autobús " + idAutobus + ":");
+            for (Ruta ruta : rutas) {
+                if (ruta.getAutobus() != null && ruta.getAutobus().getId().equals(idAutobus)) {
+                    System.out.println("Código: " + ruta.getCodigo() + ", Origen: " + ruta.getOrigen() + ", Destino: " + ruta.getDestino());
+                }
+            }
+        } else {
+            System.out.println("Autobús no encontrado.");
+        }
+    }
+
+    // Método para listar información de una ruta específica
+    public void listarRutaPorCodigo(String codigoRuta) {
+        for (Ruta ruta : rutas) {
+            if (ruta.getCodigo().equals(codigoRuta)) {
+                String autobusId = ruta.getAutobus() != null ? ruta.getAutobus().getId() : "No asignado";
+                System.out.println("Código: " + ruta.getCodigo() + ", Origen: " + ruta.getOrigen() + ", Destino: " + ruta.getDestino() + ", Autobús: " + autobusId);
+                return;
+            }
+        }
+        System.out.println("Ruta no encontrada.");
+    }
+
+    public static void main(String[] args) {
+        TransLoja sistema = new TransLoja();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nMenú:");
+            System.out.println("1. Registrar Autobús");
+            System.out.println("2. Registrar Ruta");
+            System.out.println("3. Asignar Autobús a Ruta");
+            System.out.println("4. Calcular Estadísticas de Rutas");
+            System.out.println("5. Listar Información");
+            System.out.println("6. Listar Rutas por Autobús");
+            System.out.println("7. Listar Información de una Ruta");
+            System.out.println("8. Salir");
+            System.out.print("Seleccione una opción: ");
+            int opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Ingrese ID del Autobús: ");
+                    String idAutobus = scanner.nextLine();
+                    System.out.print("Ingrese Capacidad del Autobús: ");
+                    int capacidad = scanner.nextInt();
+                    scanner.nextLine(); // Limpiar el buffer
+                    System.out.print("Ingrese Estado del Autobús (en servicio/en mantenimiento): ");
+                    String estado = scanner.nextLine();
+                    sistema.registrarAutobus(idAutobus, capacidad, estado);
+                    break;
+                case 2:
+                    System.out.print("Ingrese Código de la Ruta: ");
+                    String codigoRuta = scanner.nextLine();
+                    System.out.print("Ingrese Origen de la Ruta: ");
+                    String origen = scanner.nextLine();
+                    System.out.print("Ingrese Destino de la Ruta: ");
+                    String destino = scanner.nextLine();
+                    System.out.print("Ingrese ID del Autobús asignado: ");
+                    idAutobus = scanner.nextLine();
+                    Autobus autobus = sistema.buscarAutobusPorId(idAutobus);
+                    sistema.registrarRuta(codigoRuta, origen, destino, autobus);
+                    break;
+                case 3:
+                    System.out.print("Ingrese Código de la Ruta: ");
+                    codigoRuta = scanner.nextLine();
+                    System.out.print("Ingrese ID del Autobús a asignar: ");
+                    idAutobus = scanner.nextLine();
+                    if (sistema.asignarAutobusARuta(codigoRuta, idAutobus)) {
+                        System.out.println("Autobús asignado a la ruta correctamente.");
+                    } else {
+                        System.out.println("No se pudo asignar el autobús a la ruta. Verifique el estado del autobús o el código de la ruta.");
+                    }
+                    break;
+                case 4:
+                    sistema.calcularEstadisticas();
+                    break;
+                case 5:
+                    sistema.listarInformacion();
+                    break;
+                case 6:
+                    System.out.print("Ingrese ID del Autobús: ");
+                    idAutobus = scanner.nextLine();
+                    sistema.listarRutasPorAutobus(idAutobus);
+                    break;
+                case 7:
+                    System.out.print("Ingrese Código de la Ruta: ");
+                    codigoRuta = scanner.nextLine();
+                    sistema.listarRutaPorCodigo(codigoRuta);
+                    break;
+                case 8:
+                    System.out.println("Saliendo del sistema...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Opción no válida. Intente nuevamente.");
+                    break;
+            }
+        }
+    }
+}

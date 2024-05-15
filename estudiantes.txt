@@ -1,0 +1,103 @@
+Algoritmo VentaCarro
+    // Declaración de variables
+    Definir tipoCarro, tipoSeguro, deseaEquipamiento Como Caracter
+    Definir precioBase, iva, precioTotal, precioSeguro, precioFinal Como Real
+    Definir equipamientoSeleccionado Como Cadena
+	
+    // 1. Inicio
+    // 2. Ingresar tipo de carro
+    Escribir("Elija el carro:")
+    Escribir("1) Sail Sedan")
+    Escribir("2) Sail Hatchback")
+    Escribir("3) Beat")
+    Escribir("4) Onix")
+    Leer tipoCarro
+	
+    // 3. Mostrar características del carro seleccionado
+    // ... (Se omite la descripción para simplificar)
+	
+    // 4. Ingresar si desea equipamiento
+    Escribir("Desea agregar algún Equipamiento (Si) O (NO):")
+    Leer deseaEquipamiento
+	
+    // 5. Si desea equipamiento, mostrar la tabla y seleccionar equipamiento
+    Si deseaEquipamiento = "Si" Entonces
+		
+		Equipamiento 	(Precio USD) Sail Sedan	Sail Hatchback	Beat 	Ónix
+		Aire acondicionado	315	X	x	x	x
+		Alarma 	160	x	x	x	X
+		Aros Acero R14	155	X	x	x	
+		Aros Acero R15	180	x	x	x	X
+		Aros Aluminio R14	335	X	x	x	
+		Aros Aluminio R15	380	x	x	x	X
+		ChevyStar Connect	90	X	x	x	x
+		Elevavidrios Eléctricos 	45	x	x	x	X
+		Emblema "Chevrolet"	20 	X		x	x
+		Espejos eléctricos 	135	x	X		X
+		Espejos Manuales	80			X	x
+		Kit herramientas	60	x	x	x	X
+		Llantas R14 	355	X	x	x	
+		Llantas R15	400	x	x	x	X
+		Luces antiniebla	110	X	x	x	x
+		Moqueta rígida baul	85	X			
+		Protector de carter	75	x	X		
+		Radio estándar	205	x	x	x	X
+		Radio touch screen	445	X	x	x	x
+		Sensor/cámara de reversa	285	x	x	x	X
+		Tapicería corosil	400			X	
+		Tapicería cuero	760	X	x	x	x
+		Tapicería tela	520	x	x	x	x
+
+        Escribir("Ingrese equipamiento a modificar:")
+        Leer equipamientoSeleccionado
+    FinSi
+	
+    // 6. Mostrar tipos de seguro
+    // ... (Se omite la descripción para simplificar)
+	
+    // 7. Ingresar tipo de seguro
+    Escribir("Ingrese el seguro:")
+	Escribir("Tabla de Tipos de Seguro:")
+    Escribir("1) Cobertura amplia  De 1100 a 1399 cc, costo de año de carga  2")
+    Escribir("2) Cobertura amplia  De 1400 a 1799 cc, costo de año de carga 2.5")
+    Escribir("3) Cobertura limitada  De 1100 a 1399 cc, costo de año de carga 1.4")
+    Escribir("4) Cobertura limitada  De 1400 a 1799 cc, costo de año de carga 1.8")
+    Escribir("5) Cobertura responsabilidad civil  De 1100 a 1399 cc, costo de año de carga 0.8")
+    Escribir("6) Cobertura responsabilidad civil  De 1400 a 1799 cc, costo de año de carga 1")
+    Leer tipoSeguro
+	
+    // 8. Calcular PrecioBase del carro seleccionado
+    // ... (Lógica de cálculo del precio base según el tipo de carro)
+	
+    // 9. Mostrar PrecioBase
+    Escribir "El precio del carro sin iva es:", precioBase
+	
+    // 10. Calcular IVA
+    iva <- precioBase * 0.12
+	
+    // 11. Mostrar IVA
+    Escribir "El precio del iva es:", iva
+	
+    // 12. Calcular Precio Total del carro
+    precioTotal <- precioBase + iva
+	
+    // 13. Mostrar Precio Total con IVA
+    Escribir "El precio total del carro es:", precioTotal
+	
+    // 14. Mostrar tipo de seguro seleccionado
+    Escribir "El seguro es:", tipoSeguro
+	
+    // 15. Calcular Costo del Seguro
+    // ... (Lógica de cálculo del costo del seguro según el tipo de seguro)
+	
+    // 16. Mostrar Costo del Seguro
+    Escribir "El costo del seguro es:", precioSeguro
+	
+    // 17. Calcular Total a Pagar
+    precioFinal <- precioTotal + precioSeguro
+	
+    // 18. Mostrar Precio Final a Pagar
+    Escribir"El total a pagar es:", precioFinal
+	
+    // 19. Fin
+FinAlgoritmo
