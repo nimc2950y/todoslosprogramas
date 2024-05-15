@@ -1,0 +1,7 @@
+N,Cedula,Nombre,Edad
+1,11005576233,nathan moreno,19
+2,1102622469,lina cuenca,50
+N;Cedula;Nombre;Edad
+1,1105576233,nathan,19
+N;Cedula;Nombre;Edad
+1;1105576233;nathan;19
